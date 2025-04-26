@@ -1,6 +1,6 @@
-# Task Manager (task-manager)
+# Accounts Manager (accounts-manager)
 
-Test Task Manager For Future Project
+Test Accounts Manager For Future Project
 
 ## Install the dependencies
 ```bash
