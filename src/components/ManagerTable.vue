@@ -1,19 +1,21 @@
 <template>
   <div class="q-my-sm row">
     <h5 class="q-ma-none q-mr-sm">Учетные записи</h5>
-    <q-btn @click="appendUser" icon="add"></q-btn>
+    <q-btn dense @click="appendUser" icon="add"></q-btn>
   </div>
   <q-markup-table flat>
     <thead class="table-head">
       <tr>
         <th class="text-left">
-          <span>Метки</span>
-          <q-icon name="help_outline" size="xs" style="cursor: help">
-            <q-tooltip class="bg-indigo text-subtitle2" :offset="[10, 10]"
-              >Для указания нескольких меток олной пары логин/пароль используйте
-              разделитель</q-tooltip
-            >
-          </q-icon>
+          <div class="table-head-item-wrapper">
+            <span>Метки</span>
+            <q-icon name="help_outline" size="xs" style="cursor: help">
+              <q-tooltip class="bg-blue-2 text-subtitle2 text-dark"  anchor="center right" self="center left" :offset="[10, 10]"
+                >Для указания нескольких меток одной пары логин/пароль используйте
+                разделитель</q-tooltip
+              >
+            </q-icon>
+          </div>
         </th>
         <th class="text-left">Тип записи</th>
         <th class="text-left">Логин</th>
@@ -164,6 +166,10 @@ const removeManager = (row:ITaskManager,index: number) => {
 .table-head {
   th {
     width: 25%;
+    div.table-head-item-wrapper{
+      display: flex;
+      gap: 5px;
+    }
   }
 }
 </style>
