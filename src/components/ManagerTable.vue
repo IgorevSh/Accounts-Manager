@@ -40,10 +40,11 @@
                     :options="MS.options"
                     emit-value
                     :rules="[fieldRules]"
+                    @update:model-value="(val)=>{clearPassword(val,i,rows)}"
                     map-options
                     option-value="value"
                     option-label="label"
-                    v-model="rows.type"
+                    :model-value="rows.type"
                   />
                   </td>
                   <td :colspan="rows.type=='2'?2:1">
@@ -115,10 +116,10 @@ const validate =(row:ITaskManager)=>{
   for (const [key, value] of Object.entries(row)) {
     if (key === 'index') {
       continue;
-    } else if (key == 'password') {
-      if(row.type=='2'){
+    } else if (key == 'password' && row.type=='2') {
+    //  if(row.type=='2'){
         continue;
-      }
+   //   }
     }else if(fieldRules(value)?.length){
       result=false;
       break
@@ -126,13 +127,24 @@ const validate =(row:ITaskManager)=>{
   }
   return result
 }
+const clearPassword=(val:string|null,i:number,row:ITaskManager)=>{
+  if(displayAccountsList.value[i]) {
+    if(val=='2'){
+        displayAccountsList.value[i].password = null;
+        displayAccountsList.value[i].type = '2';
+    }else{
+      displayAccountsList.value[i].type = val;
+    }
+    checkModelForInsert(row,i)
+  }
+}
 const checkModelForInsert=(row:ITaskManager,index:number)=> {
   if(validate(row)){
-    if(row.index){
+    if(row?.index>=0){
       MS.updateManager(row,index)
     }else{
       MS.appendManager(row)
-      row.index=MS.managerList.length
+      row.index=MS.managerList.length-1
     }
   }
 }

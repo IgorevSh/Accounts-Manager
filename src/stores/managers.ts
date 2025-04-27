@@ -35,17 +35,15 @@ export const useManagerStore = defineStore('managers', {
   actions: {
     appendManager(data: ITaskManager = { tag: [], type: '2', login: null, password: null }) {
       const newRow = Object.assign({},data);
-      newRow.tag=newRow.tag?.split(';').map((tag) => {return {text:tag}});
-      console.log(newRow);
+      newRow.tag=newRow.tag?.split(';').map((tag:string) => {return {text:tag}});
       delete newRow?.index;
       this.managerList.push(newRow);
     },
 
     updateManager(row: ITaskManager, index: number) {
       const newRow =Object.assign({},row);
-      newRow.tag=newRow.tag?.split(';').map((tag) => {return {text:tag}});
+      newRow.tag=newRow.tag?.split(';').map((tag:string) => {return {text:tag}});
       delete newRow?.index;
-      console.log(newRow);
       this.managerList[index] = newRow;
     },
     removeManager(index: number) {
