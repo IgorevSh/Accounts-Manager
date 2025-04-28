@@ -1,6 +1,6 @@
 <template>
   <q-layout class="main_layout">
-  <manager-table> </manager-table>
+    <manager-table> </manager-table>
   </q-layout>
 </template>
 
@@ -13,5 +13,5 @@ import ManagerTable from 'components/ManagerTable.vue';
   width: 80%;
   margin: 0 auto 0 auto;
   padding-top: 50px;
-  }
+}
 </style>

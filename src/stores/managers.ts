@@ -19,7 +19,7 @@ export const useManagerStore = defineStore('managers', {
       return state.managerList.map((itm, i) => {
         return {
           tag:
-            (itm?.tag??[])
+            (itm?.tag ?? [])
               ?.map((tag) => {
                 return tag?.text;
               })
@@ -34,15 +34,19 @@ export const useManagerStore = defineStore('managers', {
   },
   actions: {
     appendManager(data: ITaskManager = { tag: [], type: '2', login: null, password: null }) {
-      const newRow = Object.assign({},data);
-      newRow.tag=newRow.tag?.split(';').map((tag:string) => {return {text:tag}});
+      const newRow = Object.assign({}, data);
+      newRow.tag = newRow.tag?.split(';').map((tag: string) => {
+        return { text: tag };
+      });
       delete newRow?.index;
       this.managerList.push(newRow);
     },
 
     updateManager(row: ITaskManager, index: number) {
-      const newRow =Object.assign({},row);
-      newRow.tag=newRow.tag?.split(';').map((tag:string) => {return {text:tag}});
+      const newRow = Object.assign({}, row);
+      newRow.tag = newRow.tag?.split(';').map((tag: string) => {
+        return { text: tag };
+      });
       delete newRow?.index;
       this.managerList[index] = newRow;
     },

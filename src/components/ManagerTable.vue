@@ -10,7 +10,11 @@
           <div class="table-head-item-wrapper">
             <span>Метки</span>
             <q-icon name="help_outline" size="xs" style="cursor: help">
-              <q-tooltip class="bg-blue-2 text-subtitle2 text-dark"  anchor="center right" self="center left" :offset="[10, 10]"
+              <q-tooltip
+                class="bg-blue-2 text-subtitle2 text-dark"
+                anchor="center right"
+                self="center left"
+                :offset="[10, 10]"
                 >Для указания нескольких меток одной пары логин/пароль используйте
                 разделитель</q-tooltip
               >
@@ -24,67 +28,71 @@
       </tr>
     </thead>
     <tbody>
-            <tr v-for="(rows, i) in displayAccountsList" :key="i">
-              <td>
-                  <q-input
-                    filled
-                    v-model="rows.tag"
-                    :rules="[fieldRules]"
-                    @blur="checkModelForInsert(rows,i)"
-                    :maxlength="50"
-                  />
-                </td>
-                <td>
-                  <q-select
-                    filled
-                    :options="MS.options"
-                    emit-value
-                    :rules="[fieldRules]"
-                    @update:model-value="(val)=>{clearPassword(val,i,rows)}"
-                    map-options
-                    option-value="value"
-                    option-label="label"
-                    :model-value="rows.type"
-                  />
-                  </td>
-                  <td :colspan="rows.type=='2'?2:1">
-                      <q-input
-                        filled
-                        v-model="rows.login"
-                        :rules="[fieldRules]"
-                        :maxlength="100"
-                        @blur="checkModelForInsert(rows,i)"
-                      />
-                    </td>
-              <td v-if="rows.type!='2'">
-                  <q-input
-                    filled
-                    :maxlength="100"
-                    :rules="[fieldRules]"
-                    @blur="checkModelForInsert(rows,i)"
-                    :type="isPwd[i] ? 'password' : 'text'"
-                    v-model="rows.password"
-                  >
-                    <template v-slot:append>
-                      <q-icon
-                        :name="isPwd[i] ? 'visibility_off' : 'visibility'"
-                        class="cursor-pointer"
-                        @click="isPwd[i] = !isPwd[i]"
-                      />
-                    </template>
-                  </q-input>
-                </td>
-              <td>
-                <q-btn
-                  style="margin-top: -20px"
-                  @click="removeManager(row,i)"
-                  dense
-                  size="lg"
-                  flat
-                  icon="delete"
-                ></q-btn>
-              </td>
-            </tr>
+      <tr v-for="(rows, i) in displayAccountsList" :key="i">
+        <td>
+          <q-input
+            filled
+            v-model="rows.tag"
+            :rules="[fieldRules]"
+            @blur="checkModelForInsert(rows, i)"
+            :maxlength="50"
+          />
+        </td>
+        <td>
+          <q-select
+            filled
+            :options="MS.options"
+            emit-value
+            :rules="[fieldRules]"
+            @update:model-value="
+              (val) => {
+                clearPassword(val, i, rows);
+              }
+            "
+            map-options
+            option-value="value"
+            option-label="label"
+            :model-value="rows.type"
+          />
+        </td>
+        <td :colspan="rows.type == '2' ? 2 : 1">
+          <q-input
+            filled
+            v-model="rows.login"
+            :rules="[fieldRules]"
+            :maxlength="100"
+            @blur="checkModelForInsert(rows, i)"
+          />
+        </td>
+        <td v-if="rows.type != '2'">
+          <q-input
+            filled
+            :maxlength="100"
+            :rules="[fieldRules]"
+            @blur="checkModelForInsert(rows, i)"
+            :type="isPwd[i] ? 'password' : 'text'"
+            v-model="rows.password"
+          >
+            <template v-slot:append>
+              <q-icon
+                :name="isPwd[i] ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd[i] = !isPwd[i]"
+              />
+            </template>
+          </q-input>
+        </td>
+        <td>
+          <q-btn
+            style="margin-top: -20px"
+            @click="removeManager(row, i)"
+            dense
+            size="lg"
+            flat
+            icon="delete"
+          ></q-btn>
+        </td>
+      </tr>
     </tbody>
   </q-markup-table>
 </template>
@@ -111,43 +119,43 @@ const appendUser = () => {
   console.log(MS.defaultRowState);
   displayAccountsList.value.push({ tag: null, type: '2', login: null, password: null });
 };
-const validate =(row:ITaskManager)=>{
-  let result=true;
+const validate = (row: ITaskManager) => {
+  let result = true;
   for (const [key, value] of Object.entries(row)) {
     if (key === 'index') {
       continue;
-    } else if (key == 'password' && row.type=='2') {
-    //  if(row.type=='2'){
-        continue;
-   //   }
-    }else if(fieldRules(value)?.length){
-      result=false;
-      break
+    } else if (key == 'password' && row.type == '2') {
+      //  if(row.type=='2'){
+      continue;
+      //   }
+    } else if (fieldRules(value)?.length) {
+      result = false;
+      break;
     }
   }
-  return result
-}
-const clearPassword=(val:string|null,i:number,row:ITaskManager)=>{
-  if(displayAccountsList.value[i]) {
-    if(val=='2'){
-        displayAccountsList.value[i].password = null;
-        displayAccountsList.value[i].type = '2';
-    }else{
+  return result;
+};
+const clearPassword = (val: string | null, i: number, row: ITaskManager) => {
+  if (displayAccountsList.value[i]) {
+    if (val == '2') {
+      displayAccountsList.value[i].password = null;
+      displayAccountsList.value[i].type = '2';
+    } else {
       displayAccountsList.value[i].type = val;
     }
-    checkModelForInsert(row,i)
+    checkModelForInsert(row, i);
   }
-}
-const checkModelForInsert=(row:ITaskManager,index:number)=> {
-  if(validate(row)){
-    if(row?.index>=0){
-      MS.updateManager(row,index)
-    }else{
-      MS.appendManager(row)
-      row.index=MS.managerList.length-1
+};
+const checkModelForInsert = (row: ITaskManager, index: number) => {
+  if (validate(row)) {
+    if (row?.index >= 0) {
+      MS.updateManager(row, index);
+    } else {
+      MS.appendManager(row);
+      row.index = MS.managerList.length - 1;
     }
   }
-}
+};
 // const updateManager = (index: number, value, key: 'type' | 'tag' | 'login' | 'password') => {
 //   console.log(index, value, key, fieldRules(value), !!fieldRules(value)?.length);
 //   if (key == 'type' && value == '2') {
@@ -167,9 +175,9 @@ const checkModelForInsert=(row:ITaskManager,index:number)=> {
 //   }
 //   MS.updateManager(index, value, key);
 // };
-const removeManager = (row:ITaskManager,index: number) => {
+const removeManager = (row: ITaskManager, index: number) => {
   isPwd.value.splice(index, 1);
-  displayAccountsList.value.splice(index,1);
+  displayAccountsList.value.splice(index, 1);
   MS.removeManager(index);
 };
 </script>
@@ -178,7 +186,7 @@ const removeManager = (row:ITaskManager,index: number) => {
 .table-head {
   th {
     width: 25%;
-    div.table-head-item-wrapper{
+    div.table-head-item-wrapper {
       display: flex;
       gap: 5px;
     }
