@@ -38,6 +38,15 @@ npm run format
 quasar build
 ```
 
+### Fix module error
+
+In case of some of the npm module errors,
+run in console of app directory:
+
+```bash
+npm i <module_name>
+```
+
 ### Customize the configuration
 
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js).
